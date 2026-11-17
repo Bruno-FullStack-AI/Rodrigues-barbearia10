@@ -1,165 +1,190 @@
-import { useState } from 'react';
-
-const testimonials = [
-  {
-    name: 'Lucas Silva',
-    role: 'Cliente há 3 anos',
-    avatar: '👨‍💼',
-    rating: 5,
-    text: 'Melhor barbearia que já frequentei. O Rodrigo é um verdadeiro artista. Cada corte sai perfeito e o ambiente é muito agradável. Recomendo de olhos fechados!',
-  },
-  {
-    name: 'Pedro Oliveira',
-    role: 'Cliente há 2 anos',
-    avatar: '👨',
-    rating: 5,
-    text: 'Levo meu filho de 5 anos e ele adora ir ao Rodrigo. Paciência infinita com crianças e o resultado é sempre incrível. Virou programa de pai e filho!',
-  },
-  {
-    name: 'André Santos',
-    role: 'Cliente há 5 anos',
-    avatar: '🧔',
-    rating: 5,
-    text: 'Desde que descobri o Rodrigo, nunca mais mudei de barbeiro. A atenção aos detalhes da barba é impressionante. Profissional de altíssimo nível.',
-  },
-  {
-    name: 'Rafael Costa',
-    role: 'Cliente há 1 ano',
-    avatar: '👱‍♂️',
-    rating: 5,
-    text: 'O combo corte + barba é sensacional. Saio de lá me sentindo outro homem. Produtos de qualidade e atendimento nota 10. Vale cada centavo!',
-  },
-  {
-    name: 'Marcos Ribeiro',
-    role: 'Cliente há 4 anos',
-    avatar: '👨‍🦱',
-    rating: 5,
-    text: 'Pontualidade exemplar! Nunca esperei mais que 5 minutos. O agendamento pelo WhatsApp facilita muito. Barbearia moderna com atendimento old school.',
-  },
-  {
-    name: 'João Ferreira',
-    role: 'Cliente há 2 anos',
-    avatar: '🧑',
-    rating: 5,
-    text: 'Meu adolescente não queria ir ao barbeiro. Depois que conheceu o Rodrigo, pede pra ir todo mês! O cara tem um dom com todas as idades.',
-  },
-];
+import type { CSSProperties } from "react";
+import { business, reviews } from "../data/site";
+import { ArrowUpRight, Google, Quote, Star } from "./ui/Icons";
+import { Stars } from "./ui/Stars";
 
 export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const visibleCount = 3;
-
-  const next = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prev = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const getVisibleTestimonials = () => {
-    const items = [];
-    for (let i = 0; i < visibleCount; i++) {
-      items.push(testimonials[(activeIndex + i) % testimonials.length]);
-    }
-    return items;
-  };
-
   return (
-    <section id="depoimentos" className="relative py-20 lg:py-32 bg-dark-900 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900 to-dark-950" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[200px]" />
+    <section id="avaliacoes" className="band-light section relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brass-300/25 blur-3xl" />
+        <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-white/50 blur-3xl" />
+        <div
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(20,17,12,0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(20,17,12,0.9) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+        />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="reveal">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 border border-gold-500/20 bg-gold-500/5 mb-6">
-              Depoimentos
-            </span>
+      <div className="container-x relative">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <p className="eyebrow" data-reveal>
+              Avaliações
+            </p>
+            <h2
+              className="display-lg mt-5 text-ink-950"
+              data-reveal
+              style={{ "--d": "80ms" } as CSSProperties}
+            >
+              Quem senta na cadeira,
+              <br className="hidden sm:block" />{" "}
+              <em className="italic text-brass-700">volta</em>.
+            </h2>
           </div>
-          <h2 className="reveal font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            O Que Nossos Clientes{' '}
-            <span className="gradient-text">Dizem</span>
-          </h2>
-          <p className="reveal text-dark-300 text-lg max-w-2xl mx-auto">
-            Mais de 5.000 clientes satisfeitos e contando. Confira alguns depoimentos reais.
-          </p>
+          <div
+            className="flex items-center gap-3 rounded-2xl border border-ink-950/10 bg-white/50 px-4 py-3 backdrop-blur-sm lg:mb-1"
+            data-reveal
+            style={{ "--d": "140ms" } as CSSProperties}
+          >
+            <Google className="h-6 w-6" />
+            <div>
+              <div className="flex items-center gap-1.5">
+                <Stars className="text-brass-600" />
+                <span className="text-sm font-extrabold text-ink-950">
+                  {business.rating}
+                </span>
+              </div>
+              <p className="text-[0.68rem] font-medium text-ink-950/70">
+                {business.reviewCount} avaliações no Google Maps
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Testimonial Cards */}
-        <div className="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
-          {getVisibleTestimonials().map((testimonial, i) => (
-            <div
-              key={`${activeIndex}-${i}`}
-              className="glass-light rounded-2xl p-8 card-hover relative group"
-              style={{
-                animation: `fadeInUp 0.6s ease-out ${i * 0.15}s both`,
-              }}
-            >
-              {/* Quote icon */}
-              <div className="absolute top-6 right-6 text-4xl text-gold-500/10 font-display">"</div>
+        <div className="mt-10 grid gap-4 lg:grid-cols-[1.18fr_0.82fr] lg:gap-5">
+          {/* Featured real review */}
+          <figure
+            data-reveal="scale"
+            className="relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] bg-ink-950 p-7 text-ivory shadow-[0_40px_100px_-60px_rgba(0,0,0,0.8)] sm:p-9"
+          >
+            <div aria-hidden className="pointer-events-none absolute inset-0">
+              <div className="absolute -right-10 -top-10 h-56 w-56 rounded-full bg-brass-500/15 blur-3xl" />
+              <Quote className="absolute -bottom-4 right-4 h-32 w-32 text-white/[0.04]" />
+            </div>
 
-              {/* Stars */}
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, si) => (
-                  <span key={si} className="text-gold-400 text-sm">★</span>
-                ))}
+            <div className="relative">
+              <div className="flex items-center justify-between gap-4">
+                <Stars className="text-brass-300" />
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[0.6rem] font-semibold text-ivory-dim">
+                  <Google className="h-3.5 w-3.5" />
+                  Avaliação verificada
+                </span>
               </div>
 
-              {/* Text */}
-              <p className="text-dark-200 leading-relaxed mb-6 text-sm lg:text-base">
-                "{testimonial.text}"
-              </p>
+              <blockquote className="mt-6 max-w-lg font-display text-[2rem] leading-[1.15] tracking-tight sm:text-[2.6rem]">
+                “{reviews.headline.quote}”
+              </blockquote>
 
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400/20 to-gold-600/20 flex items-center justify-center text-xl border border-gold-500/20">
-                  {testimonial.avatar}
-                </div>
+              <figcaption className="mt-7 flex items-center gap-3">
+                <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-brass-200 to-brass-500 font-display text-lg text-ink-950">
+                  JV
+                </span>
                 <div>
-                  <div className="text-white font-semibold text-sm">{testimonial.name}</div>
-                  <div className="text-dark-400 text-xs">{testimonial.role}</div>
+                  <p className="text-sm font-bold text-ivory">
+                    {reviews.headline.name}
+                  </p>
+                  <p className="text-[0.7rem] text-ivory-mute">
+                    {reviews.headline.meta}
+                  </p>
                 </div>
+              </figcaption>
+            </div>
+
+            <div className="relative mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
+              <p className="text-[0.68rem] text-ivory-mute">
+                Depoimento publicado no Google Maps.
+              </p>
+              <a
+                href={business.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline text-[0.72rem] font-bold text-brass-200 hover:text-ivory"
+              >
+                Ler as avaliações
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </figure>
+
+          {/* Side cards */}
+          <div className="flex flex-col gap-4">
+            <div
+              data-reveal
+              style={{ "--d": "100ms" } as CSSProperties}
+              className="rounded-[1.5rem] border border-ink-950/10 bg-white/65 p-5 backdrop-blur-sm"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <Stars className="text-brass-600" />
+                  <p className="mt-3 font-display text-lg leading-tight text-ink-950">
+                    Avaliação de 5 estrelas
+                  </p>
+                </div>
+                <Google className="h-5 w-5 shrink-0" />
+              </div>
+              <p className="mt-3 text-[0.7rem] font-semibold text-ink-950/70">
+                {reviews.ratingsOnly.name} · {reviews.ratingsOnly.meta}
+              </p>
+            </div>
+
+            <div
+              data-reveal
+              style={{ "--d": "160ms" } as CSSProperties}
+              className="rounded-[1.5rem] border border-ink-950/10 bg-white/45 p-5"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="grid h-9 w-9 place-items-center rounded-full bg-ink-950 text-ivory">
+                    <Star className="h-4 w-4 text-brass-300" />
+                  </span>
+                  <div>
+                    <p className="text-[0.8rem] font-bold text-ink-950">
+                      5,0 de 5
+                    </p>
+                    <p className="text-[0.65rem] text-ink-950/70">
+                      Nota máxima no Google
+                    </p>
+                  </div>
+                </div>
+                <span className="font-display text-3xl text-brass-700">5</span>
+              </div>
+              <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-ink-950/10">
+                <div
+                  data-reveal
+                  className="h-full w-full origin-left rounded-full bg-gradient-to-r from-brass-600 to-brass-300"
+                />
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Navigation */}
-        <div className="reveal flex items-center justify-center gap-4">
-          <button
-            onClick={prev}
-            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-300 hover:scale-110"
-            aria-label="Depoimento anterior"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <div className="flex gap-2">
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === activeIndex ? 'bg-gold-400 w-6' : 'bg-white/20 hover:bg-white/40'
-                }`}
-                aria-label={`Ir para depoimento ${i + 1}`}
-              />
-            ))}
+            <div
+              data-reveal
+              style={{ "--d": "220ms" } as CSSProperties}
+              className="flex flex-1 flex-col justify-between gap-4 rounded-[1.5rem] border border-dashed border-ink-950/20 bg-transparent p-5"
+            >
+              <div>
+                <p className="font-display text-lg leading-tight text-ink-950">
+                  Sentou na cadeira?
+                </p>
+                <p className="mt-1 text-[0.78rem] leading-relaxed text-ink-950/70">
+                  Sua avaliação ajuda a casa a crescer — e o próximo cliente a
+                  confiar.
+                </p>
+              </div>
+              <a
+                href={business.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-between gap-3 rounded-full border border-ink-950/20 px-4 py-2.5 text-[0.75rem] font-bold text-ink-950 transition-colors hover:border-ink-950/40 hover:bg-ink-950 hover:text-ivory"
+              >
+                Avaliar no Google
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
-
-          <button
-            onClick={next}
-            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-300 hover:scale-110"
-            aria-label="Próximo depoimento"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
         </div>
       </div>
     </section>

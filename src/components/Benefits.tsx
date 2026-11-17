@@ -1,134 +1,283 @@
-const benefits = [
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    title: 'Higiene Impecável',
-    description: 'Todos os equipamentos são esterilizados e descartáveis quando necessário. Sua segurança é prioridade.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: 'Pontualidade Garantida',
-    description: 'Agendamento inteligente para que você seja atendido no horário marcado. Sem filas, sem espera.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-      </svg>
-    ),
-    title: 'Produtos Premium',
-    description: 'Utilizamos apenas produtos profissionais de marcas renomadas para garantir o melhor resultado.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-      </svg>
-    ),
-    title: 'Atendimento Familiar',
-    description: 'Ambiente acolhedor para pais e filhos. Crianças de todas as idades são bem-vindas com carinho especial.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    title: 'Técnicas Atualizadas',
-    description: 'Sempre estudando as últimas tendências mundiais para trazer o que há de mais moderno em cortes.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: 'Localização Privilegiada',
-    description: 'Fácil acesso, estacionamento próximo e ambiente climatizado para sua comodidade total.',
-  },
-];
+import type { CSSProperties } from "react";
+import {
+  business,
+  formatMinutes,
+  hours,
+  whatsappLink,
+  defaultWhatsAppMessage,
+} from "../data/site";
+import { useOpenStatus } from "../hooks/useOpenStatus";
+import { spotlight } from "../hooks/useScroll";
+import { cn } from "../utils/cn";
+import {
+  ArrowUpRight,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  WhatsApp,
+} from "./ui/Icons";
 
 export default function Benefits() {
-  return (
-    <section id="beneficios" className="relative py-20 lg:py-32 bg-dark-950 noise overflow-hidden">
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-[150px]" />
+  const status = useOpenStatus();
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left side - Image */}
-          <div className="reveal-left relative">
-            <div className="relative rounded-2xl overflow-hidden">
-              <img
-                src="https://images.pexels.com/photos/7697490/pexels-photo-7697490.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200"
-                alt="Ferramentas de barbearia"
-                className="w-full h-[400px] lg:h-[600px] object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-950/60 to-transparent" />
+  return (
+    <section id="a-casa" className="section relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="orb -right-32 top-10 h-[24rem] w-[24rem] bg-brass-800/20" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      </div>
+
+      <div className="container-x relative">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow eyebrow--center justify-center" data-reveal>
+            A casa
+          </p>
+          <h2
+            className="display-lg mt-5"
+            data-reveal
+            style={{ "--d": "80ms" } as CSSProperties}
+          >
+            Simples assim:
+            <br className="hidden sm:block" /> você entra, a gente{" "}
+            <em className="italic-accent">resolve</em>.
+          </h2>
+          <p
+            className="mx-auto mt-5 max-w-lg text-[0.95rem] leading-relaxed text-ivory-dim"
+            data-reveal
+            style={{ "--d": "160ms" } as CSSProperties}
+          >
+            Sem letra miúda, sem espera desnecessária. Uma barbearia de bairro
+            que trata o seu tempo e o seu dinheiro com respeito.
+          </p>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6">
+          {/* Hours / status */}
+          <div
+            data-reveal
+            className="card-spot relative flex flex-col rounded-[1.5rem] border border-white/[0.09] bg-ink-900/70 p-6 md:col-span-2 lg:row-span-2"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-ivory-mute">
+                Horários
+              </p>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.62rem] font-bold",
+                  status.isOpen
+                    ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+                    : "border-brass-400/25 bg-brass-400/[0.08] text-brass-200",
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    status.isOpen ? "bg-emerald-400" : "bg-brass-400",
+                  )}
+                  aria-hidden
+                />
+                {status.label}
+              </span>
             </div>
 
-            {/* Floating card */}
-            <div className="absolute -bottom-6 -right-4 sm:right-8 glass rounded-2xl p-6 max-w-[240px] animate-float">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-dark-950 font-bold">
-                  ✓
-                </div>
-                <div>
-                  <div className="text-white font-bold text-lg">10+ Anos</div>
-                  <div className="text-dark-400 text-xs">de excelência</div>
-                </div>
+            <p className="mt-3 font-display text-[1.6rem] leading-tight text-ivory">
+              {status.isOpen ? "A cadeira está quente." : "A cadeira descansa."}
+            </p>
+            <p className="mt-1 text-[0.78rem] text-ivory-mute">
+              {status.label} · {status.detail} <span className="opacity-60">(horário de Fortaleza)</span>
+            </p>
+
+            <ul className="mt-5">
+              {hours.map((day) => {
+                const isToday = day.day === status.todayIndex;
+                return (
+                  <li
+                    key={day.label}
+                    className={cn(
+                      "hours-row",
+                      isToday && "-mx-2 rounded-md border-b-transparent bg-brass-400/[0.07] px-2 text-ivory",
+                    )}
+                    aria-current={isToday ? "date" : undefined}
+                  >
+                    <span className={cn("flex items-center gap-2", !isToday && "text-ivory-mute")}>
+                      {day.short}
+                      {isToday && (
+                        <span className="rounded bg-brass-400/15 px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-wider text-brass-200">
+                          hoje
+                        </span>
+                      )}
+                    </span>
+                    <span className={cn("tabular-nums", day.open === null ? "text-ivory-mute/80" : "font-medium text-ivory-dim")}>
+                      {day.open === null
+                        ? "Fechado"
+                        : `${formatMinutes(day.open)} – ${formatMinutes(day.close ?? 0)}`}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <a
+              href={whatsappLink(defaultWhatsAppMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm mt-5 w-full"
+            >
+              <WhatsApp />
+              Agendar no WhatsApp
+            </a>
+          </div>
+
+          {/* Value proposition */}
+          <div
+            data-reveal
+            style={{ "--d": "80ms" } as CSSProperties}
+            onPointerMove={spotlight}
+            className="card-spot relative overflow-hidden rounded-[1.5rem] border border-white/[0.09] bg-gradient-to-br from-ink-800 to-ink-900 p-6 md:col-span-2 lg:col-span-4 lg:p-8"
+          >
+            <div aria-hidden className="absolute -right-10 -top-16 h-48 w-48 rounded-full bg-brass-500/10 blur-3xl" />
+            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-sm">
+                <p className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-brass-300">
+                  Hora marcada
+                </p>
+                <h3 className="mt-3 font-display text-[1.9rem] leading-[1.08] text-ivory sm:text-[2.15rem]">
+                  O seu horário.
+                  <br />
+                  Sem espera, sem achismo.
+                </h3>
+                <p className="mt-3 text-[0.85rem] leading-relaxed text-ivory-dim/80">
+                  Agende pelo WhatsApp em menos de um minuto e chegue na hora
+                  do corte. Se surgir um imprevisto, é só avisar.
+                </p>
               </div>
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-gold-400 text-sm">★</span>
+              <div className="flex gap-4 sm:flex-col sm:gap-3">
+                {[
+                  { icon: Calendar, label: "Por mensagem" },
+                  { icon: Clock, label: "Sem fila" },
+                  { icon: Users, label: "Todas as idades" },
+                ].map(({ icon: Icon, label }) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-2 text-[0.72rem] font-semibold text-ivory-dim"
+                  >
+                    <span className="grid h-7 w-7 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-brass-300">
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                    {label}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right side - Benefits */}
-          <div>
-            <div className="reveal">
-              <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 border border-gold-500/20 bg-gold-500/5 mb-6">
-                Por Que Nos Escolher
-              </span>
-            </div>
-            <h2 className="reveal font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              A Diferença Está nos{' '}
-              <span className="gradient-text">Detalhes</span>
-            </h2>
-            <p className="reveal text-dark-300 text-lg mb-10">
-              Mais do que um corte, oferecemos uma experiência completa de cuidado pessoal 
-              com profissionalismo e dedicação.
+          {/* Price */}
+          <div
+            data-reveal
+            style={{ "--d": "140ms" } as CSSProperties}
+            onPointerMove={spotlight}
+            className="card-spot rounded-[1.5rem] border border-white/[0.09] bg-ink-900/70 p-6 lg:col-span-2"
+          >
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-ivory-mute">
+              Preço honesto
             </p>
+            <p className="mt-3 font-display text-[2.6rem] leading-none text-ivory">
+              R$ 20<span className="text-brass-300">–40</span>
+            </p>
+            <p className="mt-3 text-[0.82rem] leading-relaxed text-ivory-dim/80">
+              Do corte à barba até o combo completo. A faixa de preço da casa é
+              a mesma que está no Google — sem taxa surpresa.
+            </p>
+            <a
+              href="#precos"
+              className="link-underline mt-4 inline-flex text-[0.72rem] font-bold text-brass-200 hover:text-ivory"
+            >
+              Ver tabela completa
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
 
-            <div className="grid sm:grid-cols-2 gap-6">
-              {benefits.map((benefit, i) => (
-                <div
-                  key={benefit.title}
-                  className={`reveal stagger-${Math.min(i + 1, 6)} flex gap-4 group`}
-                >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center group-hover:bg-gold-500/20 group-hover:scale-110 transition-all duration-300">
-                    {benefit.icon}
-                  </div>
+          {/* Detail image */}
+          <div
+            data-reveal="scale"
+            style={{ "--d": "200ms" } as CSSProperties}
+            className="group relative min-h-[13rem] overflow-hidden rounded-[1.5rem] border border-white/[0.09] lg:col-span-2"
+          >
+            <img
+              src="/img/tools-1400.webp"
+              srcSet="/img/tools-700.webp 700w, /img/tools-1400.webp 1400w"
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              alt="Detalhe de navalha, máquina e pente sobre bancada de madeira"
+              loading="lazy"
+              decoding="async"
+              width={1400}
+              height={781}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/35 to-transparent" />
+            <div className="absolute inset-x-5 bottom-5">
+              <p className="caption-tag">No detalhe</p>
+              <p className="mt-1.5 font-display text-xl leading-snug text-ivory">
+                A ferramenta certa faz metade do corte.
+              </p>
+            </div>
+          </div>
+
+          {/* Location + all ages */}
+          <div
+            data-reveal
+            style={{ "--d": "260ms" } as CSSProperties}
+            className="rounded-[1.5rem] border border-white/[0.09] bg-ink-900/70 p-6 md:col-span-2 lg:col-span-6"
+          >
+            <div className="grid gap-6 sm:grid-cols-2 sm:divide-x sm:divide-white/[0.08]">
+              <div className="sm:pr-6">
+                <div className="flex items-start gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-brass-300">
+                    <MapPin />
+                  </span>
                   <div>
-                    <h3 className="text-white font-semibold mb-1 group-hover:text-gold-400 transition-colors">
-                      {benefit.title}
+                    <p className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-ivory-mute">
+                      Fácil de chegar
+                    </p>
+                    <h3 className="mt-1.5 font-display text-xl text-ivory">
+                      R. Beta — Vila Velha
                     </h3>
-                    <p className="text-dark-400 text-sm leading-relaxed">
-                      {benefit.description}
+                    <p className="text-[0.8rem] text-ivory-mute">
+                      Fortaleza — CE · {business.postalCode} · {business.plusCode}
                     </p>
                   </div>
                 </div>
-              ))}
+                <a
+                  href={business.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline mt-3 inline-flex text-[0.72rem] font-bold text-brass-200 hover:text-ivory"
+                >
+                  Abrir no Google Maps
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+
+              <div className="sm:pl-6">
+                <div className="flex items-start gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-brass-300">
+                    <Users />
+                  </span>
+                  <div>
+                    <p className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-ivory-mute">
+                      Para toda a família
+                    </p>
+                    <h3 className="mt-1.5 font-display text-xl text-ivory">
+                      Do primeiro corte ao clássico
+                    </h3>
+                    <p className="max-w-sm text-[0.8rem] leading-relaxed text-ivory-mute">
+                      Atendemos crianças, adolescentes e adultos — cada um com o
+                      tempo e a conversa que precisa.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

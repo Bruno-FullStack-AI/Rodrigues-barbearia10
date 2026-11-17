@@ -1,108 +1,174 @@
-const services = [
-  {
-    icon: '✂️',
-    title: 'Corte Masculino',
-    description: 'Cortes modernos e clássicos com técnicas de alta precisão. Do degradê perfeito ao estilo social.',
-    image: 'https://images.pexels.com/photos/13138585/pexels-photo-13138585.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-  {
-    icon: '🪒',
-    title: 'Barba & Bigode',
-    description: 'Modelagem e alinhamento de barba com navalha e toalha quente. Cuidado premium para seu rosto.',
-    image: 'https://images.pexels.com/photos/3998402/pexels-photo-3998402.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-  {
-    icon: '👦',
-    title: 'Corte Infantil',
-    description: 'Ambiente acolhedor para os pequenos. Cortes divertidos e modernos com toda a paciência do mundo.',
-    image: 'https://images.pexels.com/photos/7697385/pexels-photo-7697385.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-  {
-    icon: '💈',
-    title: 'Combo Completo',
-    description: 'Corte + barba + sobrancelha + hidratação. O pacote definitivo para quem quer sair renovado.',
-    image: 'https://images.pexels.com/photos/4969874/pexels-photo-4969874.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-  {
-    icon: '🧴',
-    title: 'Tratamento Capilar',
-    description: 'Hidratação profunda, cauterização e tratamentos exclusivos para a saúde do seu cabelo.',
-    image: 'https://images.pexels.com/photos/31840006/pexels-photo-31840006.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-  {
-    icon: '👁️',
-    title: 'Design de Sobrancelha',
-    description: 'Sobrancelhas alinhadas e com design personalizado para valorizar seu rosto. Acabamento perfeito.',
-    image: 'https://images.pexels.com/photos/9992819/pexels-photo-9992819.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
-  },
-];
+import type { CSSProperties } from "react";
+import { addOns, services, type ServiceId } from "../data/site";
+import { spotlight } from "../hooks/useScroll";
+import { cn } from "../utils/cn";
+import { ArrowRight, Check, Clock } from "./ui/Icons";
 
-export default function Services() {
+interface ServicesProps {
+  onChoose: (id: ServiceId) => void;
+}
+
+export default function Services({ onChoose }: ServicesProps) {
   return (
-    <section id="servicos" className="relative py-20 lg:py-32 bg-dark-950 noise overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gold-600/5 rounded-full blur-[120px]" />
+    <section id="servicos" className="section relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-0 h-px w-[70%] -translate-x-1/2 bg-gradient-to-r from-transparent via-brass-500/25 to-transparent" />
+        <div className="orb -right-40 top-40 h-96 w-96 bg-brass-800/20" />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16 lg:mb-20">
-          <div className="reveal">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 border border-gold-500/20 bg-gold-500/5 mb-6">
-              Nossos Serviços
-            </span>
+      <div className="container-x relative">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="eyebrow" data-reveal>
+              O ritual
+            </p>
+            <h2
+              className="display-lg mt-5"
+              data-reveal
+              style={{ "--d": "80ms" } as CSSProperties}
+            >
+              Precisão que se vê
+              <br className="hidden sm:block" /> no{" "}
+              <em className="italic-accent">espelho</em>.
+            </h2>
           </div>
-          <h2 className="reveal font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Serviços Pensados{' '}
-            <span className="gradient-text">Para Você</span>
-          </h2>
-          <p className="reveal text-dark-300 text-lg max-w-2xl mx-auto">
-            Do corte clássico ao mais moderno, cada serviço é executado com atenção aos detalhes 
-            e produtos de primeira linha.
+          <p
+            className="max-w-sm text-[0.95rem] leading-relaxed text-ivory-dim"
+            data-reveal
+            style={{ "--d": "160ms" } as CSSProperties}
+          >
+            Três formas de sentar na cadeira. Em todas elas, a mesma regra:
+            ouvir primeiro, cortar depois — e acertar no detalhe que ninguém
+            mais vê.
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service, i) => (
-            <div
-              key={service.title}
-              className={`reveal stagger-${Math.min(i + 1, 6)} group relative rounded-2xl overflow-hidden card-hover cursor-pointer`}
-            >
-              {/* Image */}
-              <div className="img-hover aspect-[4/3] relative">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/40 to-transparent" />
-              </div>
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {services.map((service, index) => {
+            const featured = service.id === "combo";
+            return (
+              <article
+                key={service.id}
+                data-reveal
+                style={{ "--d": `${index * 110}ms` } as CSSProperties}
+                onPointerMove={spotlight}
+                className={cn(
+                  "card-spot group relative flex flex-col overflow-hidden rounded-[1.5rem] border bg-ink-900/70",
+                  featured
+                    ? "border-brass-400/30 shadow-[0_30px_80px_-50px_rgba(211,160,92,0.55)] md:col-span-2 lg:col-span-1"
+                    : "border-white/[0.08]",
+                )}
+              >
+                {featured && (
+                  <span className="absolute right-4 top-4 z-20 rounded-full bg-brass-300 px-3 py-1 text-[0.58rem] font-extrabold uppercase tracking-[0.16em] text-ink-950 shadow-lg">
+                    Mais pedido
+                  </span>
+                )}
 
-              {/* Content overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-2xl">{service.icon}</span>
-                  <h3 className="font-display text-xl font-bold text-white group-hover:text-gold-400 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                </div>
-                <p className="text-dark-300 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-                <div className="mt-4 flex items-center gap-2 text-gold-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                  <span>Saiba mais</span>
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={service.image}
+                    srcSet={`${service.imageSmall} 700w, ${service.image} 1400w`}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    alt={service.alt}
+                    loading="lazy"
+                    decoding="async"
+                    width={1400}
+                    height={781}
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-950/20 to-transparent" />
 
-              {/* Hover border */}
-              <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-500/30 transition-colors duration-500" />
+                  <span className="absolute left-4 top-4 font-display text-sm tracking-[0.2em] text-brass-200/80">
+                    {service.index}
+                  </span>
+
+                  <span className="absolute bottom-3 right-4 inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-ink-950/60 px-2.5 py-1 text-[0.62rem] font-semibold text-ivory-dim backdrop-blur-md">
+                    <Clock className="h-3 w-3 text-brass-300" />
+                    {service.duration}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="display-md text-ivory">{service.name}</h3>
+                      <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-brass-300/80">
+                        {service.tagline}
+                      </p>
+                    </div>
+                    <p className="shrink-0 text-right">
+                      <span className="block text-[0.6rem] uppercase tracking-[0.16em] text-ivory-mute">
+                        a partir de
+                      </span>
+                      <span className="font-display text-2xl text-ivory">
+                        R$ {service.price}
+                      </span>
+                    </p>
+                  </div>
+
+                  <p className="mt-4 text-[0.88rem] leading-relaxed text-ivory-dim/85">
+                    {service.description}
+                  </p>
+
+                  <ul className="mt-5 grid grid-cols-1 gap-2 text-[0.8rem] text-ivory-dim/80 sm:grid-cols-2">
+                    {service.includes.map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brass-400" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => onChoose(service.id)}
+                    className={cn(
+                      "mt-6 inline-flex w-full items-center justify-between gap-3 rounded-full border px-4 py-3 text-[0.8rem] font-bold transition-all duration-300",
+                      featured
+                        ? "border-brass-400/40 bg-brass-400/10 text-brass-100 hover:bg-brass-400 hover:text-ink-950"
+                        : "border-white/12 text-ivory hover:border-brass-400/50 hover:bg-brass-400/10",
+                    )}
+                  >
+                    Agendar {service.name.toLowerCase()}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* Add-ons */}
+        <div
+          className="mt-6 overflow-hidden rounded-[1.5rem] border border-white/[0.08] bg-ink-900/40 p-5 sm:p-6"
+          data-reveal
+        >
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-xs">
+              <h3 className="font-display text-xl text-ivory">
+                Para completar o visual
+              </h3>
+              <p className="mt-1 text-[0.8rem] leading-relaxed text-ivory-mute">
+                Serviços extras combinados na hora, junto do corte.
+              </p>
             </div>
-          ))}
+            <ul className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-3 lg:max-w-2xl">
+              {addOns.map((item) => (
+                <li
+                  key={item.name}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[0.78rem] transition-colors hover:border-brass-400/30 hover:bg-brass-400/[0.06]"
+                >
+                  <span className="text-ivory-dim">{item.name}</span>
+                  <span className="font-semibold text-brass-200">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="mt-4 text-[0.68rem] leading-relaxed text-ivory-mute/90">
+            * Platinado a partir do valor indicado, conforme comprimento e
+            técnica. Valores de referência — confirme no WhatsApp.
+          </p>
         </div>
       </div>
     </section>

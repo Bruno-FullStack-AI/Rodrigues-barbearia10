@@ -1,168 +1,174 @@
-import { useState } from 'react';
+import type { CSSProperties } from "react";
+import { services, type ServiceId } from "../data/site";
+import { cn } from "../utils/cn";
+import { ArrowRight, Check, Clock, Google, Sparkle } from "./ui/Icons";
 
-const plans = [
-  {
-    name: 'Corte Masculino',
-    price: '45',
-    description: 'Corte profissional com lavagem e finalização',
-    features: [
-      'Consulta de estilo personalizada',
-      'Lavagem com produtos premium',
-      'Corte com técnica de sua escolha',
-      'Finalização profissional',
-      'Dicas de manutenção',
-    ],
-    popular: false,
-    icon: '✂️',
-  },
-  {
-    name: 'Combo Premium',
-    price: '75',
-    description: 'Corte + Barba + Sobrancelha — O pacote mais pedido',
-    features: [
-      'Tudo do Corte Masculino',
-      'Barba com navalha e toalha quente',
-      'Design de sobrancelha',
-      'Hidratação facial',
-      'Finalização com produtos exclusivos',
-      'Desconto de 15%',
-    ],
-    popular: true,
-    icon: '💈',
-  },
-  {
-    name: 'Corte Infantil',
-    price: '35',
-    description: 'Para os pequenos guerreiros de até 12 anos',
-    features: [
-      'Ambiente acolhedor e divertido',
-      'Corte moderno ou clássico',
-      'Paciência e carinho no atendimento',
-      'Finalização estilosa',
-      'Brinde especial',
-    ],
-    popular: false,
-    icon: '👦',
-  },
-];
+interface PricingProps {
+  onChoose: (id: ServiceId) => void;
+}
 
-const additionalServices = [
-  { name: 'Barba Completa', price: 'R$ 35' },
-  { name: 'Sobrancelha', price: 'R$ 15' },
-  { name: 'Hidratação Capilar', price: 'R$ 40' },
-  { name: 'Pigmentação', price: 'R$ 25' },
-  { name: 'Platinado', price: 'R$ 80' },
-  { name: 'Luzes / Mechas', price: 'R$ 120' },
-];
+const order: ServiceId[] = ["corte", "combo", "barba"];
 
-export default function Pricing() {
-  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
+export default function Pricing({ onChoose }: PricingProps) {
+  const plans = order
+    .map((id) => services.find((service) => service.id === id))
+    .filter((service): service is (typeof services)[number] => Boolean(service));
 
   return (
-    <section id="precos" className="relative py-20 lg:py-32 bg-dark-950 noise overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-[200px]" />
+    <section id="precos" className="section relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brass-500/25 to-transparent" />
+        <div className="orb left-1/4 top-1/3 h-[26rem] w-[26rem] bg-brass-900/25" />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="reveal">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 border border-gold-500/20 bg-gold-500/5 mb-6">
-              Investimento
-            </span>
-          </div>
-          <h2 className="reveal font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Preços <span className="gradient-text">Justos</span>,{' '}
-            <br className="hidden sm:block" />
-            Qualidade <span className="gradient-text">Premium</span>
+      <div className="container-x relative">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow eyebrow--center justify-center" data-reveal>
+            Investimento
+          </p>
+          <h2
+            className="display-lg mt-5"
+            data-reveal
+            style={{ "--d": "80ms" } as CSSProperties}
+          >
+            Preço honesto, sem{" "}
+            <em className="italic-accent">letra miúda</em>.
           </h2>
-          <p className="reveal text-dark-300 text-lg max-w-2xl mx-auto">
-            Investimento acessível para um cuidado pessoal de alto padrão. 
-            Escolha o serviço ideal para você.
+          <p
+            className="mx-auto mt-5 max-w-lg text-[0.95rem] leading-relaxed text-ivory-dim"
+            data-reveal
+            style={{ "--d": "160ms" } as CSSProperties}
+          >
+            Valores claros para você decidir antes de sentar na cadeira. A
+            faixa da casa no Google é de R$ 20 a R$ 40.
           </p>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-20">
-          {plans.map((plan, i) => (
-            <div
-              key={plan.name}
-              className={`reveal stagger-${i + 1} relative rounded-2xl p-8 transition-all duration-500 cursor-pointer ${
-                plan.popular
-                  ? 'bg-gradient-to-b from-gold-500/10 to-dark-950 border-2 border-gold-500/40 scale-[1.02] lg:scale-105'
-                  : 'glass-light border border-white/5 hover:border-gold-500/20'
-              }`}
-              onMouseEnter={() => setHoveredPlan(i)}
-              onMouseLeave={() => setHoveredPlan(null)}
-            >
-              {/* Popular badge */}
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1.5 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full text-dark-950 text-xs font-bold uppercase tracking-wider">
-                  Mais Popular
-                </div>
-              )}
-
-              {/* Icon */}
-              <div className="text-4xl mb-4">{plan.icon}</div>
-
-              {/* Name */}
-              <h3 className="font-display text-xl font-bold text-white mb-2">{plan.name}</h3>
-              <p className="text-dark-400 text-sm mb-6">{plan.description}</p>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-dark-400 text-lg">R$</span>
-                <span className={`text-5xl font-bold font-display ${plan.popular ? 'gradient-text' : 'text-white'}`}>
-                  {plan.price}
-                </span>
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-dark-200 text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <a
-                href="#agendar"
-                className={`block w-full text-center py-3.5 rounded-full font-semibold transition-all duration-300 btn-shine ${
-                  plan.popular || hoveredPlan === i
-                    ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-dark-950 hover:shadow-lg hover:shadow-gold-500/25'
-                    : 'border border-white/20 text-white hover:border-gold-400/50 hover:text-gold-400'
-                }`}
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {plans.map((plan, index) => {
+            const featured = plan.id === "combo";
+            return (
+              <div
+                key={plan.id}
+                data-reveal
+                style={{ "--d": `${index * 100}ms` } as CSSProperties}
+                className={cn(
+                  "relative flex flex-col rounded-[1.6rem] p-[1px] transition-transform duration-500",
+                  featured
+                    ? "bg-gradient-to-b from-brass-300/70 via-brass-500/20 to-brass-300/10 md:-translate-y-3 md:hover:-translate-y-4"
+                    : "bg-white/[0.09] hover:bg-white/[0.14]",
+                )}
               >
-                Agendar Agora
-              </a>
-            </div>
-          ))}
+                <div
+                  className={cn(
+                    "relative flex flex-1 flex-col rounded-[calc(1.6rem-1px)] p-6 sm:p-7",
+                    featured
+                      ? "bg-[radial-gradient(120%_100%_at_50%_0%,#1d1a13_0%,#0b0d0e_55%)]"
+                      : "bg-ink-900",
+                  )}
+                >
+                  {featured && (
+                    <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-r from-brass-200 to-brass-400 px-3.5 py-1.5 text-[0.58rem] font-extrabold uppercase tracking-[0.16em] text-ink-950 shadow-lg">
+                      <Sparkle className="h-3 w-3" />
+                      Mais pedido
+                    </span>
+                  )}
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-display text-[1.55rem] leading-none text-ivory">
+                        {plan.name}
+                      </h3>
+                      <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brass-300/80">
+                        {plan.tagline}
+                      </p>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 px-2 py-1 text-[0.6rem] font-semibold text-ivory-mute">
+                      <Clock className="h-3 w-3" />
+                      {plan.duration}
+                    </span>
+                  </div>
+
+                  <div className="mt-7 flex items-end gap-1.5">
+                    <span className="pb-2 text-sm text-ivory-mute">R$</span>
+                    <span
+                      className={cn(
+                        "font-display text-[3.6rem] leading-[0.8] tracking-tight",
+                        featured ? "grad-brass" : "text-ivory",
+                      )}
+                    >
+                      {plan.price}
+                    </span>
+                    <span className="pb-2 text-[0.7rem] text-ivory-mute">
+                      por serviço
+                    </span>
+                  </div>
+
+                  <div className="my-6 h-px w-full bg-white/[0.08]" />
+
+                  <ul className="flex flex-col gap-2.5">
+                    {plan.includes.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2.5 text-[0.84rem] leading-snug text-ivory-dim/85"
+                      >
+                        <Check
+                          className={cn(
+                            "mt-0.5 h-3.5 w-3.5 shrink-0",
+                            featured ? "text-brass-300" : "text-brass-400/80",
+                          )}
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => onChoose(plan.id)}
+                    className={cn(
+                      "btn mt-7 w-full",
+                      featured ? "btn-primary" : "btn-ghost",
+                    )}
+                  >
+                    Escolher {plan.name.toLowerCase()}
+                    <ArrowRight />
+                  </button>
+
+                  {featured && (
+                    <p className="mt-3 text-center text-[0.65rem] text-ivory-mute">
+                      Corte + barba com desconto no mesmo horário.
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Additional Services */}
-        <div className="reveal">
-          <h3 className="font-display text-2xl font-bold text-white text-center mb-8">
-            Serviços Adicionais
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {additionalServices.map((service, i) => (
-              <div
-                key={service.name}
-                className={`stagger-${Math.min(i + 1, 6)} glass-light rounded-xl p-4 text-center card-hover group cursor-pointer`}
+        <div
+          className="mt-6 flex flex-col gap-4 rounded-[1.4rem] border border-white/[0.08] bg-ink-900/50 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+          data-reveal
+        >
+          <ul className="grid gap-2.5 sm:grid-cols-3 sm:gap-6">
+            {[
+              "Valores de referência",
+              "Pagamento combinado no WhatsApp",
+              "Extras a partir de R$ 10",
+            ].map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-2 text-[0.75rem] text-ivory-dim/80"
               >
-                <div className="text-white font-medium text-sm mb-2 group-hover:text-gold-400 transition-colors">
-                  {service.name}
-                </div>
-                <div className="text-gold-400 font-bold font-display text-lg">{service.price}</div>
-              </div>
+                <Check className="h-3.5 w-3.5 shrink-0 text-brass-400" />
+                {item}
+              </li>
             ))}
-          </div>
+          </ul>
+          <span className="inline-flex shrink-0 items-center gap-2 text-[0.68rem] font-semibold text-ivory-mute">
+            <Google className="h-4 w-4" />
+            Faixa no Google: R$ 20–40
+          </span>
         </div>
       </div>
     </section>
