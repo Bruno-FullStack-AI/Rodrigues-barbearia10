@@ -30,7 +30,7 @@ export default function About() {
           <div className="frame-gold rounded-2xl">
             <div className="img-zoom overflow-hidden rounded-2xl border border-white/10">
               <img
-                src="/images/corte-fade.jpg"
+                src="images/corte-fade.jpg"
                 alt="Barbeiro finalizando um degradê com a máquina"
                 className="h-[420px] w-full object-cover sm:h-[520px]"
                 loading="lazy"
@@ -40,7 +40,7 @@ export default function About() {
 
           <div className="absolute -bottom-10 -right-2 hidden w-48 overflow-hidden rounded-xl border border-gold-500/25 shadow-2xl sm:block lg:-right-8 lg:w-56">
             <img
-              src="/images/resultado-fade.jpg"
+              src="images/resultado-fade.jpg"
               alt="Resultado de corte degradê com barba desenhada"
               className="h-56 w-full object-cover"
               loading="lazy"

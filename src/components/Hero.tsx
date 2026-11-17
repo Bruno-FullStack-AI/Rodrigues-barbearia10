@@ -15,7 +15,7 @@ export default function Hero() {
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 lg:pb-24 lg:pt-44"
     >
       <img
-        src="/images/ambiente.jpg"
+        src="images/ambiente.jpg"
         alt="Ambiente de barbearia com cadeira, espelho e luz quente"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
         fetchPriority="high"

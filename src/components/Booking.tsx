@@ -227,7 +227,11 @@ export default function Booking() {
 
               {slots.length === 0 ? (
                 <p className="rounded-lg border border-dashed border-white/10 px-4 py-5 text-center text-xs text-dark-400">
-                  Selecione um dia com atendimento para ver os horários disponíveis.
+                  {date
+                    ? isClosedDay
+                      ? 'Segunda-feira a barbearia fecha. Escolha de terça a domingo.'
+                      : 'Não há mais horários para este dia. Escolha outra data ou chame no WhatsApp.'
+                    : 'Selecione um dia com atendimento para ver os horários disponíveis.'}
                 </p>
               ) : (
                 <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">

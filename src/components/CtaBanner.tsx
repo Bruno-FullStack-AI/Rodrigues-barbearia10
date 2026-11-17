@@ -6,13 +6,13 @@ export default function CtaBanner() {
   return (
     <section className="relative isolate overflow-hidden py-20 sm:py-24">
       <img
-        src="/images/barba-navalhete.jpg"
+        src="images/barba-navalhete.jpg"
         alt="Barba sendo finalizada na navalha"
         loading="lazy"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
       />
-      <div className="absolute inset-0 -z-10 bg-dark-950/85" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-dark-950 via-dark-950/80 to-dark-950/40" />
+      <div className="absolute inset-0 -z-10 bg-dark-950/78" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-dark-950 via-dark-950/75 to-dark-950/30" />
 
       <div className="container-x relative">
         <div className="max-w-2xl">

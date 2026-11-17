@@ -180,37 +180,37 @@ export const highlights = [
 
 export const gallery = [
   {
-    src: '/images/corte-fade.jpg',
+    src: 'images/corte-fade.jpg',
     alt: 'Barbeiro finalizando um degradê com máquina',
     caption: 'Degradê na régua',
     tag: 'Corte',
   },
   {
-    src: '/images/corte-atendimento.jpg',
+    src: 'images/corte-atendimento.jpg',
     alt: 'Cliente durante o corte na Barbearia Alison Rodrigues',
     caption: 'Atendimento na cadeira',
     tag: 'Bastidores',
   },
   {
-    src: '/images/resultado-fade.jpg',
+    src: 'images/resultado-fade.jpg',
     alt: 'Resultado de corte fade com barba desenhada',
     caption: 'Fade + barba',
     tag: 'Resultado',
   },
   {
-    src: '/images/barba-navalhete.jpg',
+    src: 'images/barba-navalhete.jpg',
     alt: 'Barba sendo desenhada com navalha',
     caption: 'Barba na navalha',
     tag: 'Barba',
   },
   {
-    src: '/images/espelho.jpg',
+    src: 'images/espelho.jpg',
     alt: 'Cliente e barbeiro no espelho depois do corte',
     caption: 'Antes e depois',
     tag: 'Espelho',
   },
   {
-    src: '/images/ambiente.jpg',
+    src: 'images/ambiente.jpg',
     alt: 'Ambiente interno da barbearia com cadeira e espelho',
     caption: 'Nosso espaço',
     tag: 'Ambiente',
