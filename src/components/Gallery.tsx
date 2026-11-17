@@ -1,92 +1,167 @@
-const galleryImages = [
-  {
-    src: 'https://images.pexels.com/photos/3998431/pexels-photo-3998431.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=600',
-    alt: 'Barba sendo modelada com navalha',
-    span: 'row-span-2',
-  },
-  {
-    src: 'https://images.pexels.com/photos/37533244/pexels-photo-37533244.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Corte profissional de cabelo',
-    span: '',
-  },
-  {
-    src: 'https://images.pexels.com/photos/7697711/pexels-photo-7697711.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Ferramentas premium de barbearia',
-    span: '',
-  },
-  {
-    src: 'https://images.pexels.com/photos/18503633/pexels-photo-18503633.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Detalhe de corte com máquina',
-    span: '',
-  },
-  {
-    src: 'https://images.pexels.com/photos/3998426/pexels-photo-3998426.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=600',
-    alt: 'Modelagem de barba profissional',
-    span: 'row-span-2',
-  },
-  {
-    src: 'https://images.pexels.com/photos/7697363/pexels-photo-7697363.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Corte infantil divertido',
-    span: '',
-  },
-  {
-    src: 'https://images.pexels.com/photos/12464842/pexels-photo-12464842.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Técnica de corte com navalha',
-    span: '',
-  },
-  {
-    src: 'https://images.pexels.com/photos/7697358/pexels-photo-7697358.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    alt: 'Criança recebendo corte',
-    span: '',
-  },
-];
+import { useCallback, useEffect, useState } from 'react';
+import { business, gallery } from '../data/business';
+import { cn } from '../utils/cn';
+import { Icon } from './Icons';
 
 export default function Gallery() {
-  return (
-    <section id="galeria" className="relative py-20 lg:py-32 bg-dark-900 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900 to-dark-950" />
+  const [active, setActive] = useState<number | null>(null);
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="reveal">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 border border-gold-500/20 bg-gold-500/5 mb-6">
-              Galeria
-            </span>
+  const close = useCallback(() => setActive(null), []);
+  const next = useCallback(
+    () => setActive((current) => (current === null ? null : (current + 1) % gallery.length)),
+    []
+  );
+  const prev = useCallback(
+    () =>
+      setActive((current) =>
+        current === null ? null : (current - 1 + gallery.length) % gallery.length
+      ),
+    []
+  );
+
+  useEffect(() => {
+    if (active === null) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+      if (event.key === 'ArrowRight') next();
+      if (event.key === 'ArrowLeft') prev();
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [active, close, next, prev]);
+
+  return (
+    <section id="galeria" className="section-pad relative">
+      <div className="container-x">
+        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+          <div className="reveal max-w-xl">
+            <p className="eyebrow">Galeria</p>
+            <h2 className="display mt-4 text-4xl text-white sm:text-5xl lg:text-6xl">
+              O trabalho <span className="text-gold-gradient">na cadeira</span>
+            </h2>
+            <p className="mt-4 text-dark-300">
+              Cortes reais, clientes reais e o ambiente da R. Beta. Toque em uma foto para
+              ampliar.
+            </p>
           </div>
-          <h2 className="reveal font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Nosso <span className="gradient-text">Trabalho</span>
-          </h2>
-          <p className="reveal text-dark-300 text-lg max-w-2xl mx-auto">
-            Cada corte é uma obra de arte. Confira alguns dos nossos trabalhos 
-            e veja a qualidade que nos diferencia.
-          </p>
+
+          <a
+            href={business.maps.place}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="reveal btn btn-outline btn-sm"
+          >
+            <Icon name="google" className="h-4 w-4 text-gold-400" />
+            Ver fotos no Google
+          </a>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 auto-rows-[200px] sm:auto-rows-[240px]">
-          {galleryImages.map((img, i) => (
-            <div
-              key={i}
-              className={`reveal-scale stagger-${Math.min(i + 1, 6)} img-hover rounded-xl overflow-hidden relative group cursor-pointer ${img.span}`}
+        <div className="mt-10 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] sm:gap-4 lg:auto-rows-[15rem] lg:grid-cols-4">
+          {gallery.map((item, index) => (
+            <button
+              key={item.src}
+              type="button"
+              onClick={() => setActive(index)}
+              className={cn(
+                'reveal group relative h-full w-full overflow-hidden rounded-xl border border-white/10 bg-dark-900 text-left img-zoom',
+                index === 0 && 'col-span-2 row-span-2',
+                index === 5 && 'col-span-2 lg:col-span-4'
+              )}
+              aria-label={`Ampliar foto: ${item.caption}`}
             >
               <img
-                src={img.src}
-                alt={img.alt}
-                className="w-full h-full object-cover"
+                src={item.src}
+                alt={item.alt}
                 loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <p className="text-white text-sm font-medium">{img.alt}</p>
-              </div>
-              {/* Gold corner accent on hover */}
-              <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
+              <span className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-dark-950/10 to-transparent" />
+
+              <span className="absolute left-3 top-3 rounded-full border border-white/20 bg-dark-950/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-200 backdrop-blur">
+                {item.tag}
+              </span>
+
+              <span className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-2">
+                <span className="text-sm font-medium text-white drop-shadow">{item.caption}</span>
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/10 text-white opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100">
+                  <Icon name="sparkle" className="h-3.5 w-3.5" />
+                </span>
+              </span>
+            </button>
           ))}
         </div>
+
+        <p className="mt-5 text-center text-xs text-dark-400">
+          Registros reais da barbearia e imagens ilustrativas de cortes e ambiente.
+        </p>
       </div>
+
+      {active !== null && (
+        <div
+          className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Galeria de fotos"
+          onClick={close}
+        >
+          <button
+            type="button"
+            onClick={close}
+            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white transition-colors hover:border-gold-400 hover:text-gold-300"
+            aria-label="Fechar galeria"
+          >
+            <Icon name="close" className="h-5 w-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              prev();
+            }}
+            className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 text-white transition-colors hover:border-gold-400 hover:text-gold-300 sm:left-6"
+            aria-label="Foto anterior"
+          >
+            <Icon name="arrowLeft" className="h-5 w-5" />
+          </button>
+
+          <figure
+            className="max-h-[85vh] max-w-5xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={gallery[active].src}
+              alt={gallery[active].alt}
+              className="max-h-[75vh] w-auto rounded-lg object-contain"
+            />
+            <figcaption className="mt-4 text-center">
+              <p className="text-sm font-medium text-white">{gallery[active].caption}</p>
+              <p className="mt-1 text-xs text-dark-400">
+                {active + 1} / {gallery.length} · Barbearia Alison Rodrigues
+              </p>
+            </figcaption>
+          </figure>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              next();
+            }}
+            className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 text-white transition-colors hover:border-gold-400 hover:text-gold-300 sm:right-6"
+            aria-label="Próxima foto"
+          >
+            <Icon name="arrowRight" className="h-5 w-5" />
+          </button>
+        </div>
+      )}
     </section>
   );
 }

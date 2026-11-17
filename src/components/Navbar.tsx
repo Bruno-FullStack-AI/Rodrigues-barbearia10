@@ -1,135 +1,205 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { business, defaultWhatsAppMessage, whatsappLink } from '../data/business';
+import { useOpenStatus } from '../hooks/useOpenStatus';
+import { cn } from '../utils/cn';
+import { Icon } from './Icons';
 
-const navLinks = [
-  { label: 'Início', href: '#inicio' },
+const links = [
   { label: 'Serviços', href: '#servicos' },
   { label: 'Galeria', href: '#galeria' },
-  { label: 'Benefícios', href: '#beneficios' },
-  { label: 'Depoimentos', href: '#depoimentos' },
-  { label: 'Preços', href: '#precos' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Avaliações', href: '#avaliacoes' },
+  { label: 'Horários', href: '#horarios' },
+  { label: 'Dúvidas', href: '#faq' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const status = useOpenStatus();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => {
       document.body.style.overflow = '';
-    }
-  }, [mobileOpen]);
+    };
+  }, [menuOpen]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'glass py-3 shadow-2xl shadow-black/30'
-          : 'bg-transparent py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#inicio" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-700 flex items-center justify-center text-dark-950 font-display font-bold text-lg sm:text-xl group-hover:scale-110 transition-transform duration-300">
-            R
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display text-lg sm:text-xl font-bold text-white tracking-wide">
-              Rodrigo
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Faixa de informações */}
+      <div className="hidden border-b border-white/5 bg-dark-950/95 backdrop-blur md:block">
+        <div className="container-x flex h-9 items-center justify-between text-[11px] uppercase tracking-[0.16em] text-dark-300">
+          <span className="flex items-center gap-2">
+            <span
+              className={cn(
+                'h-1.5 w-1.5 rounded-full',
+                status.isOpen ? 'bg-emerald-400 pulse-dot' : 'bg-dark-400'
+              )}
+            />
+            <span className={status.isOpen ? 'text-emerald-300' : 'text-dark-300'}>
+              {status.headline}
             </span>
-            <span className="text-[10px] sm:text-xs text-gold-400 tracking-[0.25em] uppercase -mt-1">
-              Barbeiro
-            </span>
-          </div>
-        </a>
+            <span className="text-dark-600">·</span>
+            <span className="normal-case tracking-normal text-dark-400">{status.detail}</span>
+          </span>
 
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
+          <div className="flex items-center gap-6">
             <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-dark-300 hover:text-gold-400 transition-colors duration-300 relative group"
+              href={business.maps.place}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 transition-colors hover:text-gold-300"
             >
-              {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-400 transition-all duration-300 group-hover:w-full" />
+              <Icon name="pin" className="h-3.5 w-3.5 text-gold-400" />
+              {business.address.line1} · {business.address.city}
             </a>
-          ))}
-          <a
-            href="#agendar"
-            className="btn-shine bg-gradient-to-r from-gold-500 to-gold-600 text-dark-950 px-6 py-2.5 rounded-full font-semibold text-sm hover:from-gold-400 hover:to-gold-500 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/25"
-          >
-            Agendar Agora
+            <a
+              href={`tel:${business.phone.tel}`}
+              className="flex items-center gap-1.5 transition-colors hover:text-gold-300"
+            >
+              <Icon name="phone" className="h-3.5 w-3.5 text-gold-400" />
+              {business.phone.display}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Navegação */}
+      <div
+        className={cn(
+          'transition-all duration-500',
+          scrolled
+            ? 'border-b border-gold-500/15 bg-dark-950/92 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl'
+            : 'border-b border-transparent bg-gradient-to-b from-dark-950/85 via-dark-950/45 to-transparent'
+        )}
+      >
+        <div className="container-x flex items-center justify-between py-3 lg:py-4">
+          <a href="#inicio" className="group flex items-center gap-3" aria-label={business.name}>
+            <span className="relative grid h-11 w-11 place-items-center rounded-md border border-gold-500/50 bg-dark-900/80 font-serif text-lg text-gold-300 transition-colors group-hover:border-gold-400">
+              AR
+              <span className="absolute -bottom-1 -right-1 h-2 w-2 rounded-full bg-gold-400" />
+            </span>
+            <span className="leading-none">
+              <span className="display block text-2xl tracking-wide text-white">
+                Alison Rodrigues
+              </span>
+              <span className="mt-1 block text-[9px] uppercase tracking-[0.32em] text-gold-400/90 sm:text-[10px]">
+                Barbearia · Vila Velha
+              </span>
+            </span>
           </a>
+
+          <nav className="hidden items-center gap-8 lg:flex" aria-label="Principal">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="group relative text-sm text-dark-200 transition-colors hover:text-gold-300"
+              >
+                {link.label}
+                <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-gold-400 transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <a
+              href={whatsappLink(defaultWhatsAppMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-gold btn-sm btn-shine hidden sm:inline-flex"
+            >
+              <Icon name="whatsapp" className="h-4 w-4" />
+              Agendar
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              className="grid h-11 w-11 place-items-center rounded-md border border-white/15 text-white transition-colors hover:border-gold-400/60 hover:text-gold-300 lg:hidden"
+              aria-label="Abrir menu"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+            >
+              <Icon name="menu" className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu mobile */}
+      <div
+        id="mobile-menu"
+        aria-hidden={!menuOpen}
+        className={cn(
+          'fixed inset-0 z-[60] flex flex-col bg-dark-950/98 backdrop-blur-xl transition-all duration-500 lg:hidden',
+          menuOpen ? 'visible opacity-100' : 'pointer-events-none invisible opacity-0'
+        )}
+      >
+        <div className="container-x flex items-center justify-between py-4">
+          <span className="display text-2xl text-white">Alison Rodrigues</span>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="grid h-11 w-11 place-items-center rounded-md border border-white/15 text-white"
+            aria-label="Fechar menu"
+          >
+            <Icon name="close" className="h-5 w-5" />
+          </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden flex flex-col gap-1.5 p-2 relative z-[60]"
-          aria-label="Menu"
-        >
-          <span
-            className={`w-6 h-0.5 bg-gold-400 transition-all duration-300 ${
-              mobileOpen ? 'rotate-45 translate-y-2' : ''
-            }`}
-          />
-          <span
-            className={`w-6 h-0.5 bg-gold-400 transition-all duration-300 ${
-              mobileOpen ? 'opacity-0' : ''
-            }`}
-          />
-          <span
-            className={`w-6 h-0.5 bg-gold-400 transition-all duration-300 ${
-              mobileOpen ? '-rotate-45 -translate-y-2' : ''
-            }`}
-          />
-        </button>
-
-        {/* Mobile Menu */}
-        <div
-          className={`fixed inset-0 bg-dark-950/98 backdrop-blur-xl z-50 flex flex-col items-center justify-center gap-6 transition-all duration-500 lg:hidden ${
-            mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
-        >
-          {navLinks.map((link, i) => (
+        <div className="container-x flex flex-1 flex-col justify-center gap-1 py-6">
+          {links.map((link, index) => (
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-2xl font-display text-white hover:text-gold-400 transition-all duration-300"
+              onClick={() => setMenuOpen(false)}
+              className="display border-b border-white/5 py-4 text-4xl text-white transition-colors hover:text-gold-300"
               style={{
-                transitionDelay: mobileOpen ? `${i * 80}ms` : '0ms',
-                transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',
-                opacity: mobileOpen ? 1 : 0,
+                transitionDelay: menuOpen ? `${index * 45}ms` : '0ms',
               }}
             >
               {link.label}
             </a>
           ))}
+
           <a
             href="#agendar"
-            onClick={() => setMobileOpen(false)}
-            className="mt-4 btn-shine bg-gradient-to-r from-gold-500 to-gold-600 text-dark-950 px-8 py-3 rounded-full font-semibold text-lg hover:from-gold-400 hover:to-gold-500 transition-all duration-300"
-            style={{
-              transitionDelay: mobileOpen ? `${navLinks.length * 80}ms` : '0ms',
-              transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',
-              opacity: mobileOpen ? 1 : 0,
-            }}
+            onClick={() => setMenuOpen(false)}
+            className="btn btn-gold btn-lg btn-full mt-8"
           >
-            Agendar Agora
+            <Icon name="calendar" className="h-5 w-5" />
+            Agendar horário
           </a>
         </div>
+
+        <div className="container-x space-y-2 pb-8 text-sm text-dark-300">
+          <p className="flex items-center gap-2">
+            <Icon name="pin" className="h-4 w-4 text-gold-400" />
+            {business.address.full}
+          </p>
+          <a href={`tel:${business.phone.tel}`} className="flex items-center gap-2">
+            <Icon name="phone" className="h-4 w-4 text-gold-400" />
+            {business.phone.display}
+          </a>
+          <p className="flex items-center gap-2">
+            <span
+              className={cn(
+                'h-1.5 w-1.5 rounded-full',
+                status.isOpen ? 'bg-emerald-400' : 'bg-dark-400'
+              )}
+            />
+            {status.headline} · {status.detail}
+          </p>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }

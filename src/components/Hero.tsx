@@ -1,116 +1,195 @@
-import { useEffect, useState } from 'react';
+import { business, defaultWhatsAppMessage, whatsappLink } from '../data/business';
+import { useOpenStatus } from '../hooks/useOpenStatus';
+import { Icon } from './Icons';
+import Stars from './Stars';
 
 export default function Hero() {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  const status = useOpenStatus();
+  const todayHours = status.today.open
+    ? `${status.today.open} às ${status.today.close}`
+    : 'Fechado';
 
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src="https://images.pexels.com/photos/897263/pexels-photo-897263.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1920"
-          alt="Barbearia premium"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-950/90 to-dark-950/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-transparent to-dark-950/40" />
-      </div>
+    <section
+      id="inicio"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 lg:pb-24 lg:pt-44"
+    >
+      <img
+        src="/images/ambiente.jpg"
+        alt="Ambiente de barbearia com cadeira, espelho e luz quente"
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        fetchPriority="high"
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-dark-950 via-dark-950/92 to-dark-950/35" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark-950 via-dark-950/20 to-dark-950/70" />
+      <div className="pointer-events-none absolute -left-24 top-1/3 -z-10 h-72 w-72 rounded-full bg-gold-600/15 blur-[110px]" />
 
-      {/* Ambient decorations */}
-      <div className="absolute top-20 right-10 w-72 h-72 bg-gold-500/10 rounded-full blur-[100px] animate-float" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gold-600/5 rounded-full blur-[120px]" style={{ animationDelay: '3s' }} />
+      <div className="container-x relative z-10">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          {/* Texto */}
+          <div>
+            <p className="eyebrow animate-fade-up">Vila Velha · Fortaleza — CE</p>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-16 lg:pt-32 lg:pb-24">
-        <div className="max-w-3xl">
-          {/* Badge */}
-          <div
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 transition-all duration-1000 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
-            <span className="text-gold-300 text-sm font-medium">Barbearia Premium em sua cidade</span>
+            <h1
+              className="display mt-6 animate-fade-up text-[3.7rem] leading-[0.88] text-white sm:text-[4.8rem] lg:text-[5.6rem] xl:text-[6.2rem]"
+              style={{ animationDelay: '80ms' }}
+            >
+              <span className="block">Estilo,</span>
+              <span className="block">atitude</span>
+              <span className="block">
+                e <span className="text-gold-gradient">confiança</span>
+                <span className="text-gold-400">.</span>
+              </span>
+            </h1>
+
+            <p
+              className="mt-6 max-w-xl animate-fade-up text-base leading-relaxed text-dark-200 sm:text-lg"
+              style={{ animationDelay: '160ms' }}
+            >
+              Corte, degradê e barba na navalha na cadeira do{' '}
+              <strong className="font-semibold text-white">Alison Rodrigues</strong>. Atendimento
+              direto, preço justo e aquele acabamento que você reconhece no espelho.
+            </p>
+
+            <div
+              className="mt-8 flex animate-fade-up flex-col gap-3 sm:flex-row sm:items-center"
+              style={{ animationDelay: '240ms' }}
+            >
+              <a
+                href={whatsappLink(defaultWhatsAppMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-gold btn-lg btn-shine"
+              >
+                <Icon name="whatsapp" className="h-5 w-5" />
+                Agendar no WhatsApp
+              </a>
+              <a href="#servicos" className="btn btn-outline btn-lg">
+                Ver serviços e preços
+                <Icon name="arrowRight" className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div
+              className="mt-8 flex animate-fade-up flex-wrap items-center gap-x-6 gap-y-3 text-sm text-dark-300"
+              style={{ animationDelay: '320ms' }}
+            >
+              <a
+                href={business.maps.reviews}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition-colors hover:text-white"
+              >
+                <Stars />
+                <span className="font-semibold text-white">5,0</span>
+                <span>· {business.rating.count} avaliações no Google</span>
+              </a>
+              <span className="hidden h-4 w-px bg-white/15 sm:block" />
+              <span className="flex items-center gap-2">
+                <Icon name="wallet" className="h-4 w-4 text-gold-400" />
+                Serviços de {business.priceRange}
+              </span>
+            </div>
           </div>
 
-          {/* Heading */}
-          <h1
-            className={`font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[1.05] mb-6 transition-all duration-1000 delay-200 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            Estilo &{' '}
-            <span className="gradient-text">Precisão</span>
-            <br />
-            em Cada Corte
-          </h1>
-
-          {/* Subheading */}
-          <p
-            className={`text-lg sm:text-xl text-dark-300 max-w-xl mb-10 leading-relaxed transition-all duration-1000 delay-400 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            Cortes de cabelo e barba para homens e crianças de todas as idades. 
-            Experiência premium com técnicas modernas e atendimento exclusivo.
-          </p>
-
-          {/* CTA Buttons */}
+          {/* Cartão de atendimento */}
           <div
-            className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-1000 delay-500 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
+            className="animate-fade-up lg:justify-self-end"
+            style={{ animationDelay: '380ms' }}
           >
-            <a
-              href="#agendar"
-              className="btn-shine bg-gradient-to-r from-gold-500 to-gold-600 text-dark-950 px-8 py-4 rounded-full font-bold text-lg hover:from-gold-400 hover:to-gold-500 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 hover:scale-105 text-center animate-pulse-gold"
-            >
-              Agendar Meu Horário
-            </a>
-            <a
-              href="#servicos"
-              className="flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300 hover:border-gold-400/50 group"
-            >
-              <span>Ver Serviços</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-
-          {/* Stats */}
-          <div
-            className={`flex flex-wrap gap-8 sm:gap-12 transition-all duration-1000 delay-700 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            {[
-              { number: '5.000+', label: 'Clientes Satisfeitos' },
-              { number: '10+', label: 'Anos de Experiência' },
-              { number: '4.9', label: 'Avaliação ★★★★★' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center sm:text-left">
-                <div className="text-2xl sm:text-3xl font-bold gradient-text font-display">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-dark-400 mt-1">{stat.label}</div>
+            <div className="glass w-full max-w-sm rounded-2xl p-6 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-gold-300">
+                  Hoje na barbearia
+                </span>
+                <span
+                  className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${
+                    status.isOpen
+                      ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300'
+                      : 'border-white/10 bg-white/5 text-dark-300'
+                  }`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      status.isOpen ? 'bg-emerald-400 pulse-dot' : 'bg-dark-400'
+                    }`}
+                  />
+                  {status.headline}
+                </span>
               </div>
-            ))}
+
+              <dl className="mt-5 space-y-4 text-sm">
+                <div className="flex items-start gap-3">
+                  <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.18em] text-dark-400">
+                      {status.today.label}
+                    </dt>
+                    <dd className="text-white">{todayHours}</dd>
+                    <dd className="text-xs text-dark-400">{status.detail}</dd>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.18em] text-dark-400">
+                      Endereço
+                    </dt>
+                    <dd className="text-white">{business.address.line1}</dd>
+                    <dd className="text-xs text-dark-400">{business.address.line2}</dd>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.18em] text-dark-400">
+                      WhatsApp
+                    </dt>
+                    <dd className="text-white">{business.phone.display}</dd>
+                  </div>
+                </div>
+              </dl>
+
+              <div className="mt-6 grid grid-cols-2 gap-2">
+                <a
+                  href={business.maps.directions}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline btn-sm"
+                >
+                  <Icon name="pin" className="h-4 w-4" />
+                  Rota
+                </a>
+                <a
+                  href={whatsappLink(defaultWhatsAppMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-gold btn-sm"
+                >
+                  <Icon name="whatsapp" className="h-4 w-4" />
+                  Marcar
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-4 text-center text-xs text-dark-400 lg:text-right">
+              Ter–Qui 9h–19h · Sex e Sáb 9h–12h · Dom 8h–12h
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
-        <span className="text-xs text-dark-400 uppercase tracking-widest">Rolar</span>
-        <div className="w-6 h-10 rounded-full border-2 border-dark-400/30 flex justify-center">
-          <div className="w-1.5 h-3 bg-gold-400 rounded-full mt-2 animate-bounce" />
-        </div>
-      </div>
+      <a
+        href="#sobre"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-dark-400 transition-colors hover:text-gold-300 lg:flex"
+      >
+        Descer
+        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 p-1">
+          <span className="h-2 w-1 animate-bounce rounded-full bg-gold-400" />
+        </span>
+      </a>
     </section>
   );
 }
