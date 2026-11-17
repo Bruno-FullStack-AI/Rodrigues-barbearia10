@@ -814,6 +814,10 @@ body::after {
     row-gap: 0.75rem;
   }
 
+  .marquee__track > *:nth-child(n + 2) {
+    display: none;
+  }
+
   .orb {
     animation: none !important;
   }
