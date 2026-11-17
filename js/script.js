@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "5585988086334";
+const WHATSAPP_NUMBER = "5585989387208";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -171,12 +171,32 @@ function buildSlots(ranges) {
 }
 
 function hoursForDay(date) {
-  return date.getDay() === 0
-    ? [["08:00", "12:00"]]
-    : [
-        ["08:00", "12:00"],
-        ["15:00", "20:00"],
-      ];
+  // Horário oficial (Google Maps): Seg fechado; Ter–Qui 9h–19h; Sex–Sáb 9h–12h; Dom 8h–12h.
+  const week = {
+    0: [["08:00", "12:00"]],
+    1: [],
+    2: [["09:00", "19:00"]],
+    3: [["09:00", "19:00"]],
+    4: [["09:00", "19:00"]],
+    5: [["09:00", "12:00"]],
+    6: [["09:00", "12:00"]],
+  };
+  return week[date.getDay()] || [];
+}
+
+function hoursLabel(date) {
+  switch (date.getDay()) {
+    case 0:
+      return "Domingo: 8h às 12h";
+    case 1:
+      return "Segunda: fechado";
+    case 2:
+    case 3:
+    case 4:
+      return "Terça a quinta: 9h às 19h";
+    default:
+      return "Sexta e sábado: 9h às 12h";
+  }
 }
 
 function availableSlots(date) {
@@ -221,12 +241,7 @@ function renderTimes(isoDate) {
     return;
   }
 
-  if (timeHint) {
-    timeHint.textContent =
-      date.getDay() === 0
-        ? "Domingo: 8h às 12h"
-        : "Seg a sáb: 8h às 12h e 15h às 20h";
-  }
+  if (timeHint) timeHint.textContent = hoursLabel(date);
 
   let lastPeriod = "";
   slots.forEach((slot) => {
@@ -253,6 +268,7 @@ function renderTimes(isoDate) {
       });
       if (formError) formError.hidden = true;
       setInvalid($("#timeOptions"), false);
+      updateSummary();
       refreshWhatsAppLink();
     });
     timeOptions.append(button);
@@ -282,6 +298,7 @@ function renderDates() {
         item.setAttribute("aria-selected", String(item === button));
       });
       renderTimes(iso);
+      updateSummary();
       if (formError) formError.hidden = true;
     });
     dateOptions.append(button);
@@ -316,11 +333,10 @@ function bookingPayload(mark = false) {
 
   const linhas = [
     "Olá! Quero agendar um horário na Rodrigues Barbearia.",
+    `Agendamento para ${formatDateLabel(data)} às ${hora}.`,
     `Nome: ${nome}`,
     `Telefone: ${telefone}`,
     `Serviço: ${servico}`,
-    `Data: ${formatDateLabel(data)}`,
-    `Horário: ${hora}`,
   ];
 
   if (obs) linhas.push(`Observação: ${obs}`);
@@ -341,6 +357,20 @@ function refreshWhatsAppLink() {
   const payload = bookingPayload(false);
   if (payload.ok && whatsappSend) {
     whatsappSend.href = whatsappUrl(payload.text);
+  }
+}
+
+function updateSummary() {
+  const summary = $("#bookingSummary");
+  if (!summary) return;
+  const data = dateInput?.value || "";
+  const hora = timeInput?.value || "";
+  if (data && hora) {
+    summary.hidden = false;
+    summary.textContent = `Agendamento para ${formatDateLabel(data)} às ${hora} — confirme no botão abaixo.`;
+  } else {
+    summary.hidden = true;
+    summary.textContent = "";
   }
 }
 
